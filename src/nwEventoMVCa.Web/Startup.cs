@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using nwEventoMVCa.Core.Repositories;
+using nwEventoMVCa.Infrastructure.Repositories;
 
 namespace nwEventoMVCa.Web
 {
@@ -16,6 +18,7 @@ namespace nwEventoMVCa.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddScoped<IEventRepository, EventRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
