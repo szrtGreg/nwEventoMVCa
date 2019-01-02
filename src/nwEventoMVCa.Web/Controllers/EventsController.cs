@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using nwEventoMVCa.Core.Domain;
+using nwEventoMVCa.Core.Services;
 using nwEventoMVCa.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,16 @@ namespace nwEventoMVCa.Web.Controllers
     [Route("events")]
     public class EventsController : Controller
     {
-        private static readonly List<Event> _events = new List<Event>
+        private readonly IEventService _eventService;
+
+        public EventsController(IEventService eventService)
         {
-            new Event("Laptop", "Platne", 3000),
-            new Event("Jeans", "Darmowe", 150),
-            new Event("Hammer", "Platne", 47)
-        };
+            _eventService = eventService;
+        }
 
         public IActionResult Index()
         {
-            var events = _events.Select(e => new EventViewModel
+            var events = _eventService.GetAll().Select(e => new EventViewModel
             {
                 Id = e.Id,
                 Name = e.Name,
@@ -46,7 +47,7 @@ namespace nwEventoMVCa.Web.Controllers
             {
                 return View(viewModel);
             }
-            _events.Add(new Event(viewModel.Name, viewModel.Category, viewModel.Price));
+            _eventService.Add(viewModel.Name, viewModel.Category, viewModel.Price);
 
             return RedirectToAction(nameof(Index));
         }

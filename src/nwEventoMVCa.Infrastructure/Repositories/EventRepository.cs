@@ -9,8 +9,13 @@ namespace nwEventoMVCa.Infrastructure.Repositories
 {
     public class EventRepository : IEventRepository
     {
-        private static readonly ISet<Event> _events = new HashSet<Event>();
-      
+        private static readonly ISet<Event> _events = new HashSet<Event>()
+        {
+            new Event("Laptop", "Platne", 3000),
+            new Event("Jeans", "darmowe", 150),
+            new Event("Hammer", "Platne", 47)
+        };
+
 
         public Event Get(Guid id)
             => _events.SingleOrDefault(x => x.Id == id);
