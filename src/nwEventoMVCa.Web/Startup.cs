@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using nwEventoMVCa.Core.Mapper;
 using nwEventoMVCa.Core.Repositories;
 using nwEventoMVCa.Core.Services;
 using nwEventoMVCa.Infrastructure.Repositories;
@@ -21,6 +22,7 @@ namespace nwEventoMVCa.Web
             services.AddMvc();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IEventService, EventService>();
+            services.AddSingleton(AutoMapperConfig.GetMapper());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
