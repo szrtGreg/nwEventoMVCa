@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using nwEventoMVCa.Core.Domain;
+using nwEventoMVCa.Core.DTO;
 using nwEventoMVCa.Core.Services;
 using nwEventoMVCa.Web.Models;
 using System;
@@ -60,13 +61,21 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpPost("{id}/update")]
-        public IActionResult Update(Guid id, AddOrUpdateEventViewModel viewModel)
+        public IActionResult Update(AddOrUpdateEventViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
             }
-          
+
+            _eventService.Update(new EventDto
+            {
+                Id = viewModel.Id,
+                Name = viewModel.Name,
+                Price = viewModel.Price,
+                Category = viewModel.Category
+            });
+
             return RedirectToAction(nameof(Index));
         }
     }

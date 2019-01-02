@@ -48,5 +48,18 @@ namespace nwEventoMVCa.Core.Services
             var @event = new Event(name, category, price);
             _eventRepository.Add(@event);
         }
+
+        public void Update(EventDto @eventDto)
+        {
+            var existingEvent = _eventRepository.Get(@eventDto.Id);
+            if (existingEvent == null)
+            {
+                throw new Exception($"Event was not found, id: '{@eventDto.Id}'.");
+            }
+            existingEvent.SetName(@eventDto.Name);
+            existingEvent.SetPrice(@eventDto.Price);
+            existingEvent.SetCategory(@eventDto.Category);
+            _eventRepository.Update(existingEvent);
+        }
     }
 }

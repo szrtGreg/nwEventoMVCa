@@ -10,5 +10,6 @@ namespace nwEventoMVCa.Core.Services
         EventDto Get(Guid id);
         IEnumerable<EventDto> GetAll();
         void Add(string name, string category, decimal price);
+        void Update(EventDto @eventDto);
     }
 }
