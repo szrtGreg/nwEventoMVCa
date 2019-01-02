@@ -3,6 +3,7 @@ using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace nwEventoMVCa.Core.Mapper
@@ -12,7 +13,8 @@ namespace nwEventoMVCa.Core.Mapper
         public static IMapper GetMapper()
             => new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Event, EventDto>();
+                cfg.CreateMap<Event, EventDto>()
+                    .ForMember(x => x.TicketsCount, m => m.MapFrom(p => p.Tickets.Count()));
             }).CreateMapper();
     }
 }
