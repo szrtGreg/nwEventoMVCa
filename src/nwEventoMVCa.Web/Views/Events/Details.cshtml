@@ -4,10 +4,10 @@
 <div class="col-lg-4">
     <div class="card">
         <div class="card-block">
-            <h4 class="card-title">@Model.Name</h4>
-            <h6 class="card-title">@Model.Category</h6>
-            <h6 class="card-title">@Model.Price</h6>
-            <h6 class="card-title">@Model.TicketsCount</h6>
+            <h4 class="card-title">Name: @Model.Name</h4>
+            <h6 class="card-title">Category: @Model.Category</h6>
+            <h6 class="card-title">Price: @Model.Price</h6>
+            <h6 class="card-title">TicketCount: @Model.TicketsCount</h6>
             Tickets:
             @foreach (var ticket in Model.Tickets)
             {
@@ -15,7 +15,7 @@
                     <div class="card-block">
                         <h4 class="card-title">Id: @ticket.Id</h4>
                         <h6 class="card-subtitle mb-2 text-muted">EvnetId: @ticket.EventId</h6>
-                        <h6 class="card-subtitle mb-2 text-muted">@ticket.Seating</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Seating: @ticket.Seating</h6>
 
                     </div>
                 </div>
