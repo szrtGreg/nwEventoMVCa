@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutoMapper;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
 using nwEventoMVCa.Core.Repositories;
@@ -11,34 +12,24 @@ namespace nwEventoMVCa.Core.Services
     public class EventService : IEventService
     {
         private readonly IEventRepository _eventRepository;
+        private readonly IMapper _mapper;
 
-        public EventService(IEventRepository eventRepository)
+        public EventService(IEventRepository eventRepository, IMapper mapper)
         {
             _eventRepository = eventRepository;
+            _mapper = mapper;
         }
 
         public EventDto Get(Guid id)
         {
             var @event = _eventRepository.Get(id);
-            return @event == null ? null : new EventDto
-            {
-                Id = @event.Id,
-                Name = @event.Name,
-                Category = @event.Category,
-                Price = @event.Price
-            };
+            return @event == null ? null : _mapper.Map<EventDto>(@event);
         }
 
         public IEnumerable<EventDto> GetAll()
         {
             var events = _eventRepository.GetAll()
-                .Select(e => new EventDto
-            {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Category = e.Category,
-                    Price = e.Price
-            });
+                .Select(e => _mapper.Map<EventDto>(e));
 
             return events;
         }
