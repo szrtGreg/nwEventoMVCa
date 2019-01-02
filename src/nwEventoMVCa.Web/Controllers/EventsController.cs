@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
 using nwEventoMVCa.Core.Services;
@@ -14,10 +15,12 @@ namespace nwEventoMVCa.Web.Controllers
     public class EventsController : Controller
     {
         private readonly IEventService _eventService;
+        private readonly IMapper _mapper;
 
-        public EventsController(IEventService eventService)
+        public EventsController(IEventService eventService, IMapper mapper)
         {
             _eventService = eventService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -25,6 +28,19 @@ namespace nwEventoMVCa.Web.Controllers
             var events = _eventService.GetAll().Select(e => new EventViewModel(e));
 
             return View(events);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Details(Guid id)
+        {
+            var eventDetails = _eventService.Get(id);
+            if (eventDetails == null)
+            {
+                return NotFound();
+            }
+            var viewModel = _mapper.Map<EventDetailsViewModel>(eventDetails);
+
+            return View(viewModel);
         }
 
         [HttpGet("add")]
