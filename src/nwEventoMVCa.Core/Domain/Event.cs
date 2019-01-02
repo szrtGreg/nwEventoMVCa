@@ -18,9 +18,9 @@ namespace nwEventoMVCa.Core.Domain
 
         public IEnumerable<Ticket> Tickets => _tickets;
 
-        public Event(string name, string category, decimal price)
+        public Event(Guid id, string name, string category, decimal price)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             SetName(name);
             SetCategory(category);
             SetPrice(price);

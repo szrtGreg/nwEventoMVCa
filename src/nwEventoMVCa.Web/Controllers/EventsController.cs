@@ -58,7 +58,9 @@ namespace nwEventoMVCa.Web.Controllers
             {
                 return View(viewModel);
             }
-            _eventService.Add(viewModel.Name, viewModel.Category, viewModel.Price);
+            var eventId = Guid.NewGuid();
+            _eventService.Add(eventId, viewModel.Name, viewModel.Category, viewModel.Price);
+            _eventService.AddTickets(eventId, viewModel.TicketsCount);
 
             return RedirectToAction(nameof(Index));
         }

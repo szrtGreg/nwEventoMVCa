@@ -8,7 +8,7 @@ namespace nwEventoMVCa.Core.DTO
     {
         public Guid Id { get; set; }
 
-        public Guid EvnetId { get; set; }
+        public Guid EventId { get; set; }
 
         public int Seating { get; set; }
     }

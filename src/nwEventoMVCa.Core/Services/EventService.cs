@@ -35,9 +35,9 @@ namespace nwEventoMVCa.Core.Services
             return events;
         }
 
-        public void Add(string name, string category, decimal price)
+        public void Add(Guid id, string name, string category, decimal price)
         {
-            var @event = new Event(name, category, price);
+            var @event = new Event(id, name, category, price);
             _eventRepository.Add(@event);
         }
 
