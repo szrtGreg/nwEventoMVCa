@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using nwEventoMVCa.Core.Domain;
+using nwEventoMVCa.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,15 @@ namespace nwEventoMVCa.Web.Controllers
 
         public IActionResult Index()
         {
-            return View(_events);
+            var events = _events.Select(e => new EventViewModel
+            {
+                Id = e.Id,
+                Name = e.Name,
+                Category = e.Category,
+                Price = e.Price
+            });
+
+            return View(events);
         }
     }
 }
