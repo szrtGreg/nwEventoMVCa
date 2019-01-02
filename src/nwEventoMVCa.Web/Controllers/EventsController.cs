@@ -34,13 +34,13 @@ namespace nwEventoMVCa.Web.Controllers
         [HttpGet("add")]
         public IActionResult Add()
         {
-            var viewModel = new EventViewModel();
+            var viewModel = new AddOrUpdateEventViewModel();
 
             return View(viewModel);
         }
 
         [HttpPost("add")]
-        public IActionResult Add(EventViewModel viewModel)
+        public IActionResult Add(AddOrUpdateEventViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
