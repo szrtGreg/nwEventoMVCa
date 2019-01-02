@@ -14,7 +14,7 @@ namespace nwEventoMVCa.Web.Controllers
         private static readonly List<Event> _events = new List<Event>
         {
             new Event("Laptop", "Platne", 3000),
-            new Event("Jeans", "Bezplatne", 150),
+            new Event("Jeans", "Darmowe", 150),
             new Event("Hammer", "Platne", 47)
         };
 
@@ -29,6 +29,26 @@ namespace nwEventoMVCa.Web.Controllers
             });
 
             return View(events);
+        }
+
+        [HttpGet("add")]
+        public IActionResult Add()
+        {
+            var viewModel = new AddOrUpdateEventViewModel();
+
+            return View(viewModel);
+        }
+
+        [HttpPost("add")]
+        public IActionResult Add(AddOrUpdateEventViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+            _events.Add(new Event(viewModel.Name, viewModel.Category, viewModel.Price));
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
