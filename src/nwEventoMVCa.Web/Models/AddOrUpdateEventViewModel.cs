@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using nwEventoMVCa.Core.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,14 @@ namespace nwEventoMVCa.Web.Models
             new SelectListItem { Text = "Platne", Value = "Platne"},
             new SelectListItem { Text = "Darmowe", Value = "Darmowe"},
         };
+
+        public AddOrUpdateEventViewModel()
+        {
+
+        }
+
+        public AddOrUpdateEventViewModel(EventDto dto) : base(dto)
+        {
+        }
     }
 }
