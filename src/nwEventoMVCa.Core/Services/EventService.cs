@@ -20,10 +20,11 @@ namespace nwEventoMVCa.Core.Services
             _mapper = mapper;
         }
 
-        public EventDto Get(Guid id)
+        public EventDetailsDto Get(Guid id)
         {
             var @event = _eventRepository.Get(id);
-            return @event == null ? null : _mapper.Map<EventDto>(@event);
+
+            return _mapper.Map<EventDetailsDto>(@event);
         }
 
         public IEnumerable<EventDto> GetAll()
@@ -34,10 +35,21 @@ namespace nwEventoMVCa.Core.Services
             return events;
         }
 
-        public void Add(string name, string category, decimal price)
+        public void Add(Guid id, string name, string category, decimal price)
         {
-            var @event = new Event(name, category, price);
+            var @event = new Event(id, name, category, price);
             _eventRepository.Add(@event);
+        }
+
+        public void AddTickets(Guid eventId, int amount)
+        {
+            var @event = _eventRepository.Get(eventId);
+            if (@event == null)
+            {
+                throw new Exception($"Event was not found for id: '{@event.Id}'");
+            }
+            @event.AddTickets(amount);
+            _eventRepository.Update(@event);
         }
 
         public void Update(EventDto @eventDto)

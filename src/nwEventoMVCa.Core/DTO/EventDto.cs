@@ -13,5 +13,7 @@ namespace nwEventoMVCa.Core.DTO
         public string Category { get; set; }
 
         public decimal Price { get; set; }
+
+        public int TicketsCount { get; set; }
     }
 }

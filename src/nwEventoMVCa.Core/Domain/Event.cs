@@ -14,12 +14,26 @@ namespace nwEventoMVCa.Core.Domain
 
         public decimal Price { get; protected set; }
 
-        public Event(string name, string category, decimal price)
+        private ISet<Ticket> _tickets = new HashSet<Ticket>();
+
+        public IEnumerable<Ticket> Tickets => _tickets;
+
+        public Event(Guid id, string name, string category, decimal price)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             SetName(name);
             SetCategory(category);
             SetPrice(price);
+        }
+
+        public void AddTickets(int amount)
+        {
+            var seating = _tickets.Count + 1;
+            for (var i = 0; i < amount; i++)
+            {
+                _tickets.Add(new Ticket(this, seating));
+                seating++;
+            }
         }
 
         public void SetName(string name)
