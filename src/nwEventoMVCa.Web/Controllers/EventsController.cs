@@ -21,13 +21,7 @@ namespace nwEventoMVCa.Web.Controllers
 
         public IActionResult Index()
         {
-            var events = _eventService.GetAll().Select(e => new EventViewModel
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Category = e.Category,
-                Price = e.Price
-            });
+            var events = _eventService.GetAll().Select(e => new EventViewModel(e));
 
             return View(events);
         }
@@ -49,6 +43,30 @@ namespace nwEventoMVCa.Web.Controllers
             }
             _eventService.Add(viewModel.Name, viewModel.Category, viewModel.Price);
 
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("{id}/update")]
+        public IActionResult Update(Guid id)
+        {
+            var @event = _eventService.Get(id);
+            if (@event == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new AddOrUpdateEventViewModel(@event);
+
+            return View(viewModel);
+        }
+
+        [HttpPost("{id}/update")]
+        public IActionResult Update(Guid id, AddOrUpdateEventViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+          
             return RedirectToAction(nameof(Index));
         }
     }

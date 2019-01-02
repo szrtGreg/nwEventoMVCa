@@ -17,6 +17,18 @@ namespace nwEventoMVCa.Core.Services
             _eventRepository = eventRepository;
         }
 
+        public EventDto Get(Guid id)
+        {
+            var @event = _eventRepository.Get(id);
+            return @event == null ? null : new EventDto
+            {
+                Id = @event.Id,
+                Name = @event.Name,
+                Category = @event.Category,
+                Price = @event.Price
+            };
+        }
+
         public IEnumerable<EventDto> GetAll()
         {
             var events = _eventRepository.GetAll()
