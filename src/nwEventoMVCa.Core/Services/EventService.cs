@@ -64,5 +64,15 @@ namespace nwEventoMVCa.Core.Services
             existingEvent.SetCategory(@eventDto.Category);
             _eventRepository.Update(existingEvent);
         }
+
+        public void Delete(Guid id)
+        {
+            var @event = _eventRepository.Get(id);
+            if (@event == null)
+            {
+                throw new Exception($"Event was not found, id: '{id}'.");
+            }
+            _eventRepository.Delete(@event);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace nwEventoMVCa.Core.Services
         void Add(Guid id, string name, string category, decimal price);
         void AddTickets(Guid eventId, int amount);
         void Update(EventDto @eventDto);
+        void Delete(Guid id);
     }
 }
