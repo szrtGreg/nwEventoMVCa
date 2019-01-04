@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,13 @@ namespace nwEventoMVCa.Web
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddSingleton(AutoMapperConfig.GetMapper());
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+             .AddCookie(c =>
+             {
+                 c.LoginPath = new PathString("/login");
+                 c.AccessDeniedPath = new PathString("/forbidden");
+                 c.ExpireTimeSpan = TimeSpan.FromDays(7);
+             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,6 +41,7 @@ namespace nwEventoMVCa.Web
             app.UseStatusCodePages();
             app.UseStaticFiles();
             SeedData(app);
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
 
