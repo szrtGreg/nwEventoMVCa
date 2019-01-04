@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using nwEventoMVCa.Core.Services;
 using nwEventoMVCa.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,13 @@ namespace nwEventoMVCa.Web.Controllers
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class AccountController : Controller
     {
+        private readonly IUserService _userService;
+
+        public AccountController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -34,10 +42,17 @@ namespace nwEventoMVCa.Web.Controllers
             {
                 return View(viewModel);
             }
-            if (viewModel.Email != "user@user.com" || viewModel.Password != "secret")
+            try
             {
+                _userService.Login(viewModel.Email, viewModel.Password);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+
                 return View(viewModel);
             }
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, viewModel.Email)
