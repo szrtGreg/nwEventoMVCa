@@ -22,6 +22,7 @@ namespace nwEventoMVCa.Web
             services.AddMvc();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddSingleton(AutoMapperConfig.GetMapper());
         }
 
@@ -31,7 +32,14 @@ namespace nwEventoMVCa.Web
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
+            SeedData(app);
             app.UseMvcWithDefaultRoute();
+        }
+
+        private void SeedData(IApplicationBuilder app)
+        {
+            var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+            dataInitializer.Seed();
         }
     }
 }
