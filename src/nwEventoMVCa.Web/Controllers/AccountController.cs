@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,16 +18,27 @@ namespace nwEventoMVCa.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
+            var userDto = _userService.Get(@User.Identity.Name);
+
+            var viewModel = new UserViewModel()
+            {
+                Id = userDto.Id,
+                Email = userDto.Email,
+                Role = userDto.Role.ToString()
+            };
+
+            return View(viewModel);
+         }
 
         [AllowAnonymous]
         [HttpGet("login")]
@@ -53,9 +65,11 @@ namespace nwEventoMVCa.Web.Controllers
                 return View(viewModel);
             }
 
+            var user = _userService.Get(viewModel.Email);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, viewModel.Email)
+                new Claim(ClaimTypes.Name, viewModel.Email),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

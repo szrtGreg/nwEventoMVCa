@@ -12,5 +12,9 @@ namespace nwEventoMVCa.Web.Controllers
         {
             return View();
         }
+
+        [HttpGet("forbidden")]
+        public IActionResult Forbidden()
+            => View();
     }
 }
