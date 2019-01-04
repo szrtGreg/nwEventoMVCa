@@ -96,5 +96,13 @@ namespace nwEventoMVCa.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet("{id}/delete")]
+        public IActionResult Delete(Guid id)
+        {
+            _eventService.Delete(id);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using AutoMapper;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
+using nwEventoMVCa.Core.Extensions;
 using nwEventoMVCa.Core.Repositories;
 
 namespace nwEventoMVCa.Core.Services
@@ -43,26 +44,24 @@ namespace nwEventoMVCa.Core.Services
 
         public void AddTickets(Guid eventId, int amount)
         {
-            var @event = _eventRepository.Get(eventId);
-            if (@event == null)
-            {
-                throw new Exception($"Event was not found for id: '{@event.Id}'");
-            }
+            var @event = _eventRepository.GetOrFailEvent(eventId);
             @event.AddTickets(amount);
             _eventRepository.Update(@event);
         }
 
         public void Update(EventDto @eventDto)
         {
-            var existingEvent = _eventRepository.Get(@eventDto.Id);
-            if (existingEvent == null)
-            {
-                throw new Exception($"Event was not found, id: '{@eventDto.Id}'.");
-            }
+            var existingEvent = _eventRepository.GetOrFailEvent(@eventDto.Id);
             existingEvent.SetName(@eventDto.Name);
             existingEvent.SetPrice(@eventDto.Price);
             existingEvent.SetCategory(@eventDto.Category);
             _eventRepository.Update(existingEvent);
+        }
+
+        public void Delete(Guid id)
+        {
+            var @event = _eventRepository.GetOrFailEvent(id);
+            _eventRepository.Delete(@event);
         }
     }
 }
