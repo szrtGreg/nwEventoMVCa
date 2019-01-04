@@ -30,7 +30,7 @@ namespace nwEventoMVCa.Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
              .AddCookie(c =>
              {
-                 c.LoginPath = new PathString("/login");
+                 c.LoginPath = new PathString("/account/login");
                  c.AccessDeniedPath = new PathString("/forbidden");
                  c.ExpireTimeSpan = TimeSpan.FromDays(7);
              });
