@@ -11,6 +11,8 @@ namespace nwEventoMVCa.Web.Models
 
         public Guid EventId { get; set; }
 
+        public Guid UserId { get; set; }
+
         public int Seating { get; set; }
     }
 }

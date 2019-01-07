@@ -14,15 +14,18 @@ using System.Threading.Tasks;
 namespace nwEventoMVCa.Web.Controllers
 {
     [Route("events")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Policy = "require-admin")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class EventsController : Controller
     {
         private readonly IEventService _eventService;
+        private readonly ITicketService _ticketService;
         private readonly IMapper _mapper;
 
-        public EventsController(IEventService eventService, IMapper mapper)
+        public EventsController(IEventService eventService, 
+            ITicketService ticketService,IMapper mapper)
         {
             _eventService = eventService;
+            _ticketService = ticketService;
             _mapper = mapper;
         }
 
@@ -35,6 +38,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "require-admin")]
         public IActionResult Details(Guid id)
         {
             var eventDetails = _eventService.Get(id);
@@ -48,6 +52,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpGet("add")]
+        [Authorize(Policy = "require-admin")]
         public IActionResult Add()
         {
             var viewModel = new AddOrUpdateEventViewModel();
@@ -56,6 +61,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize(Policy = "require-admin")]
         public IActionResult Add(AddOrUpdateEventViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -70,6 +76,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpGet("{id}/update")]
+        [Authorize(Policy = "require-admin")]
         public IActionResult Update(Guid id)
         {
             var @event = _eventService.Get(id);
@@ -83,6 +90,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpPost("{id}/update")]
+        [Authorize(Policy = "require-admin")]
         public IActionResult Update(AddOrUpdateEventViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -102,11 +110,44 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpGet("{id}/delete")]
+        [Authorize(Policy = "require-admin")]
         public IActionResult Delete(Guid id)
         {
             _eventService.Delete(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet("{id}/purchase")]
+        public IActionResult Purchase(Guid id)
+        {
+            try
+            {
+                var email = @User.Identity.Name;
+                _ticketService.Purchase(email, id, 1);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("{id}/cancel")]
+        public IActionResult Cancel(Guid id)
+        {
+            try
+            {
+                var email = @User.Identity.Name;
+                _ticketService.Cancel(email, id, 1);
+
+                return RedirectToAction(nameof(Index), controllerName: "Account");
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

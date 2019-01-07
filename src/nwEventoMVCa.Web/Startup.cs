@@ -27,6 +27,8 @@ namespace nwEventoMVCa.Web
             services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<ITicketService, TicketService>();
             services.AddSingleton(AutoMapperConfig.GetMapper());
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
              .AddCookie(c =>

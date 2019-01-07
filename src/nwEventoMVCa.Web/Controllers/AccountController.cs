@@ -18,23 +18,26 @@ namespace nwEventoMVCa.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ITicketService _ticketService;
         private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService, IMapper mapper)
+        public AccountController(IUserService userService, 
+            ITicketService ticketService, IMapper mapper)
         {
             _userService = userService;
+            _ticketService = ticketService;
             _mapper = mapper;
         }
 
         public IActionResult Index()
         {
             var userDto = _userService.Get(@User.Identity.Name);
+            var ticketsDto = _ticketService.GetTicketsForUser(userDto.Email);
 
-            var viewModel = new UserViewModel()
+            var viewModel = new UserProfileViewModel()
             {
-                Id = userDto.Id,
-                Email = userDto.Email,
-                Role = userDto.Role.ToString()
+                UserViewModel = _mapper.Map<UserViewModel>(userDto),
+                TicketsViewModel = _mapper.Map<IEnumerable<TicketViewModel>>(ticketsDto)
             };
 
             return View(viewModel);
