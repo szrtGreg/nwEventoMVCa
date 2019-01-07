@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace nwEventoMVCa.Core.Domain
@@ -18,6 +19,10 @@ namespace nwEventoMVCa.Core.Domain
 
         public IEnumerable<Ticket> Tickets => _tickets;
 
+        public IEnumerable<Ticket> PurchasedTickets => Tickets.Where(x => x.Purchased);
+
+        public IEnumerable<Ticket> AvailableTickets => Tickets.Except(PurchasedTickets);
+
         public Event(Guid id, string name, string category, decimal price)
         {
             Id = id;
@@ -33,6 +38,35 @@ namespace nwEventoMVCa.Core.Domain
             {
                 _tickets.Add(new Ticket(this, seating));
                 seating++;
+            }
+        }
+
+        public void PurchaseTickets(User user, int amount)
+        {
+            if (AvailableTickets.Count() < amount)
+            {
+                throw new Exception("Not enough tickets to purchase");
+            }
+            var tickets = AvailableTickets.Take(amount);
+            foreach (var ticket in tickets)
+            {
+                ticket.Purchase(user);
+            }
+        }
+
+        public IEnumerable<Ticket> GetTicketsPurchasedByUser(User user)
+           => PurchasedTickets.Where(x => x.UserId == user.Id);
+
+        public void CancelPurchasedTickets(User user, int amount)
+        {
+            var tickets = GetTicketsPurchasedByUser(user);
+            if (tickets.Count() < amount)
+            {
+                throw new Exception("Not enough purchased tickets to be cancelled");
+            }
+            foreach (var ticket in tickets.Take(amount))
+            {
+                ticket.Cancel();
             }
         }
 

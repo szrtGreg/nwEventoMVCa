@@ -24,9 +24,11 @@
                             <div class="card">
                                 <div class="card-block">
                                     <h4 class="card-title">@even.Name</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">@even.Id</h6>
                                     <h6 class="card-subtitle mb-2 text-muted">@even.Category</h6>
                                     <h6 class="card-subtitle mb-2 text-muted">Price: @even.Price</h6>
                                     <h6 class="card-subtitle mb-2 text-muted">TicketsCount: @even.TicketsCount</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">AvailableTickets: @even.AvailableTicketsCount</h6>
                                     @if (isAdmin)
                                     {
                                         <a asp-action="Update" asp-route-id="@even.Id" title="Update event" class="card-link">Update</a>
@@ -38,6 +40,10 @@
                                     @if (isAdmin)
                                     {
                                         <a asp-action="Delete" asp-route-id="@even.Id" title="Delete event" class="card-link">Delete</a>
+                                    }
+                                    @if (even.AvailableTicketsCount > 0)
+                                    {
+                                        <a asp-action="purchase" asp-route-id="@even.Id" title="Purchase ticket" class="btn btn-success">Attend</a>
                                     }
                                 </div>
                             </div>

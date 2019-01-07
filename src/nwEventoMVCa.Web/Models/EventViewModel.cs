@@ -19,6 +19,9 @@ namespace nwEventoMVCa.Web.Models
 
         public int TicketsCount { get; set; }
 
+        public int AvailableTicketsCount { get; set; }
+
+
         public EventViewModel()
         {
 
@@ -31,6 +34,7 @@ namespace nwEventoMVCa.Web.Models
             Category = dto.Category;
             Price = dto.Price;
             TicketsCount = dto.TicketsCount;
+            AvailableTicketsCount = dto.AvailableTicketsCount;
         }
     }
 }

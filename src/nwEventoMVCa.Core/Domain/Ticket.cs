@@ -12,11 +12,40 @@ namespace nwEventoMVCa.Core.Domain
 
         public int Seating { get; protected set; }
 
+        public Guid? UserId { get; protected set; }
+
+        public string Username { get; protected set; }
+
+        public DateTime? PurchasedAt { get; protected set; }
+
+        public bool Purchased => PurchasedAt.HasValue;
+
         public Ticket(Event @event, int seating)
         {
             Id = Guid.NewGuid();
             EventId = @event.Id;
             Seating = seating;
+        }
+
+        public void Purchase(User user)
+        {
+            if (Purchased)
+            {
+                throw new Exception("Ticket was already purchased");
+            }
+            UserId = user.Id;
+            PurchasedAt = DateTime.UtcNow;
+        }
+
+        public void Cancel()
+        {
+            if (!Purchased)
+            {
+                throw new Exception("Ticket was not purchased");
+            }
+            UserId = null;
+            Username = null;
+            PurchasedAt = null;
         }
     }
 }

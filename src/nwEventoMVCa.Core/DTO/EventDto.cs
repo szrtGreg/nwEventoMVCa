@@ -15,5 +15,9 @@ namespace nwEventoMVCa.Core.DTO
         public decimal Price { get; set; }
 
         public int TicketsCount { get; set; }
+
+        public int AvailableTicketsCount { get; set; }
+
+        public int PurchasedTicketsCount { get; set; }
     }
 }
