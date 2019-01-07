@@ -1,5 +1,10 @@
-﻿<div class="row">
+﻿@model UserViewModel
+<div class="row">
     <div class="col-lg-12">
-        <h1>Welcome: @User.Identity.Name</h1>
+        <h1>Welcome:@Model.Email</h1>
+        <div class="card-block">
+            <h4 class="card-subtitle mb-2 text-muted">Role: @Model.Role</h4>
+            <h6 class="card-subtitle mb-2 text-muted">Id: @Model.Id</h6>
+        </div>
     </div>
 </div> 

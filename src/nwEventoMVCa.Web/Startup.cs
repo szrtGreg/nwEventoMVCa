@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using nwEventoMVCa.Core.DTO;
 using nwEventoMVCa.Core.Mapper;
 using nwEventoMVCa.Core.Repositories;
 using nwEventoMVCa.Core.Services;
@@ -24,14 +25,18 @@ namespace nwEventoMVCa.Web
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IDataInitializer, DataInitializer>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddSingleton(AutoMapperConfig.GetMapper());
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
              .AddCookie(c =>
              {
-                 c.LoginPath = new PathString("/login");
+                 c.LoginPath = new PathString("/account/login");
                  c.AccessDeniedPath = new PathString("/forbidden");
                  c.ExpireTimeSpan = TimeSpan.FromDays(7);
              });
+            services.AddAuthorization(a => a.AddPolicy("require-admin",
+                p => p.RequireRole(RoleDto.Admin.ToString())));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

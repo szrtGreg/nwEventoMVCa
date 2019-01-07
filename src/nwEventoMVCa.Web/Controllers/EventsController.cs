@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 namespace nwEventoMVCa.Web.Controllers
 {
     [Route("events")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Policy = "require-admin")]
     public class EventsController : Controller
     {
         private readonly IEventService _eventService;
@@ -23,6 +26,7 @@ namespace nwEventoMVCa.Web.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var events = _eventService.GetAll().Select(e => new EventViewModel(e));
