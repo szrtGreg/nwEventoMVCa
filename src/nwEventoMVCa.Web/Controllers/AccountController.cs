@@ -16,27 +16,27 @@ namespace nwEventoMVCa.Web.Controllers
 {
     [Route("account")]
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IUserService _userService;
         private readonly ITicketService _ticketService;
-        private readonly IMemoryCache _cache;
+        private readonly ICartService _cartService;
         private readonly IMapper _mapper;
 
         public AccountController(IUserService userService, 
             ITicketService ticketService,
-            IMemoryCache cache,
+            ICartService cartService,
             IMapper mapper)
         {
             _userService = userService;
             _ticketService = ticketService;
-            _cache = cache;
+            _cartService = cartService;
             _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var userDto = _userService.Get(@User.Identity.Name);
+            var userDto = _userService.Get(CurrentUserId);
             var ticketsDto = _ticketService.GetTicketsForUser(userDto.Email);
 
             var viewModel = new UserProfileViewModel()
@@ -76,14 +76,14 @@ namespace nwEventoMVCa.Web.Controllers
             var user = _userService.Get(viewModel.Email);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, viewModel.Email),
+                new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-            _cache.Set($"{viewModel.Email}:cart", new CartViewModel(), DateTime.UtcNow.AddDays(7));
+            _cartService.Create(user.Id);
             return RedirectToAction("Index", "Account");
         }
 
@@ -95,7 +95,7 @@ namespace nwEventoMVCa.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
             await HttpContext.SignOutAsync();
-            _cache.Remove($"{User.Identity.Name}:cart");
+            _cartService.Delete(CurrentUserId);
             return RedirectToAction("Index", "Home");
         }
     }

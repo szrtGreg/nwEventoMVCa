@@ -31,6 +31,17 @@ namespace nwEventoMVCa.Core.Extensions
             return user;
         }
 
+        public static User GetOrFailUser(this IUserRepository repo, Guid userId)
+        {
+            var user = repo.Get(userId);
+            if (user == null)
+            {
+                throw new Exception($"Event was not found, id: '{user}'.");
+            }
+
+            return user;
+        }
+
         public static Ticket GetOrFailTicket(this IEventRepository repo, Guid eventId, Guid ticketId)
         {
             var @event = repo.GetOrFailEvent(eventId);

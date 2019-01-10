@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using nwEventoMVCa.Core.DTO;
+using nwEventoMVCa.Core.Extensions;
 using nwEventoMVCa.Core.Repositories;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,13 @@ namespace nwEventoMVCa.Core.Services
         {
             _userRepository = userRepository;
             _mapper = mapper;
+        }
+
+        public UserDto Get(Guid userId)
+        {
+            var user = _userRepository.GetOrFailUser(userId);
+
+            return _mapper.Map<UserDto>(user);
         }
 
         public UserDto Get(string email)

@@ -7,6 +7,7 @@ namespace nwEventoMVCa.Core.Services
 {
     public interface IUserService
     {
+        UserDto Get(Guid userId);
         UserDto Get(string email);
         void Login(string email, string password);
     }

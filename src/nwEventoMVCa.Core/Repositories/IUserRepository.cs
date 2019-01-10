@@ -7,6 +7,7 @@ namespace nwEventoMVCa.Core.Repositories
 {
     public interface IUserRepository
     {
+        User Get(Guid userId);
         User Get(string email);
         void Add(User user);
     }

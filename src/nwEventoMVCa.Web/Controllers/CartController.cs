@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -14,20 +15,26 @@ namespace nwEventoMVCa.Web.Controllers
 {
     [Route("cart")]
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-    public class CartController : Controller
+    public class CartController : BaseController
     {
-        private readonly IMemoryCache _cache;
-        private readonly IProductService _productService;
+        private readonly ICartService _cartService;
+        private readonly IMapper _mapper;
 
-        public CartController(IMemoryCache cache, IProductService productService)
+        public CartController(ICartService cartService, IMapper mapper)
         {
-            _cache = cache;
-            _productService = productService;
+            _cartService = cartService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var viewModel = _cache.Get<CartViewModel>($"{User.Identity.Name}:cart");
+            var cart = _cartService.Get(CurrentUserId);
+            if (cart == null)
+            {
+                _cartService.Create(CurrentUserId);
+                cart = _cartService.Get(CurrentUserId);
+            }
+            var viewModel = _mapper.Map<CartViewModel>(cart);
 
             return View(viewModel);
         }
@@ -35,29 +42,7 @@ namespace nwEventoMVCa.Web.Controllers
         [HttpPost("items/{productId}/add")]
         public IActionResult Add(Guid productId)
         {
-            var product = _productService.Get(productId);
-            if (product == null)
-            {
-                return BadRequest();
-            }
-            var cart = _cache.Get<CartViewModel>($"{User.Identity.Name}:cart");
-            var cartItem = cart.Items.SingleOrDefault(i => i.ProductId == productId);
-            if (cartItem == null)
-            {
-                cartItem = new CartItemViewModel
-                {
-                    ProductId = productId,
-                    ProductName = product.Name,
-                    UnitPrice = product.Price,
-                    Quantity = 1
-                };
-                cart.Items.Add(cartItem);
-            }
-            else
-            {
-                cartItem.Quantity++;
-            }
-            _cache.Set($"{User.Identity.Name}:cart", cart);
+            _cartService.AddProduct(CurrentUserId, productId);
 
             return RedirectToAction("Index", "Products");
         }

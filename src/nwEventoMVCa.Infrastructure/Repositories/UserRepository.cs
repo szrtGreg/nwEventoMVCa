@@ -15,6 +15,9 @@ namespace nwEventoMVCa.Infrastructure.Repositories
             new User("admin@shop.com", "secret", role: Role.Admin)
         };
 
+        public User Get(Guid userId)
+            => _users.SingleOrDefault(x => x.Id == userId);
+
         public User Get(string email)
             => _users.SingleOrDefault(x =>
                 string.Equals(x.Email, email, StringComparison.InvariantCultureIgnoreCase));
