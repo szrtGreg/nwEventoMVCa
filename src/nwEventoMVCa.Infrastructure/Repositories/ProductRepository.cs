@@ -9,7 +9,13 @@ namespace nwEventoMVCa.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private static readonly ISet<Product> _products = new HashSet<Product>();
+        private static readonly ISet<Product> _products = new HashSet<Product>()
+        {
+            new Product("Product1", 100),
+            new Product("Product2", 100),
+            new Product("Product3", 100),
+            new Product("Product4", 100)
+        };
 
         public Product Get(Guid id)
                 => _products.SingleOrDefault(x => x.Id == id);

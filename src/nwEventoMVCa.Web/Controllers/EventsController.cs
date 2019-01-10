@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
 using nwEventoMVCa.Core.Services;
@@ -20,18 +21,32 @@ namespace nwEventoMVCa.Web.Controllers
         private readonly IEventService _eventService;
         private readonly ITicketService _ticketService;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _cache;
 
         public EventsController(IEventService eventService, 
-            ITicketService ticketService,IMapper mapper)
+            ITicketService ticketService,
+            IMapper mapper, IMemoryCache cache)
         {
             _eventService = eventService;
             _ticketService = ticketService;
             _mapper = mapper;
+            _cache = cache;
         }
 
         [AllowAnonymous]
         public IActionResult Index()
         {
+            //var events = _cache.Get<IEnumerable<EventViewModel>>("events");
+            //if (events == null)
+            //{
+            //    Console.WriteLine("Fetching from service");
+            //    events = _eventService.GetAll().Select(e => new EventViewModel(e));
+            //    _cache.Set("events", events, TimeSpan.FromSeconds(20));
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Fetching from cache");
+            //}
             var events = _eventService.GetAll().Select(e => new EventViewModel(e));
 
             return View(events);

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using nwEventoMVCa.Core.Services;
 using nwEventoMVCa.Web.Models;
 using System;
@@ -19,13 +20,17 @@ namespace nwEventoMVCa.Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly ITicketService _ticketService;
+        private readonly IMemoryCache _cache;
         private readonly IMapper _mapper;
 
         public AccountController(IUserService userService, 
-            ITicketService ticketService, IMapper mapper)
+            ITicketService ticketService,
+            IMemoryCache cache,
+            IMapper mapper)
         {
             _userService = userService;
             _ticketService = ticketService;
+            _cache = cache;
             _mapper = mapper;
         }
 
@@ -78,7 +83,7 @@ namespace nwEventoMVCa.Web.Controllers
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
+            _cache.Set($"{viewModel.Email}:cart", new CartViewModel(), DateTime.UtcNow.AddDays(7));
             return RedirectToAction("Index", "Account");
         }
 
@@ -90,7 +95,7 @@ namespace nwEventoMVCa.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
             await HttpContext.SignOutAsync();
-
+            _cache.Remove($"{User.Identity.Name}:cart");
             return RedirectToAction("Index", "Home");
         }
     }
