@@ -17,21 +17,21 @@ namespace nwEventoMVCa.Web.Controllers
 {
     [Route("events")]
     [CookieAuth]
-    public class EventsController : Controller
+    public class EventsController : BaseController
     {
         private readonly IEventService _eventService;
         private readonly ITicketService _ticketService;
         private readonly IMapper _mapper;
-        private readonly IMemoryCache _cache;
+        private readonly IUserService _userService;
 
-        public EventsController(IEventService eventService, 
-            ITicketService ticketService,
-            IMapper mapper, IMemoryCache cache)
+        public EventsController(IEventService eventService,
+           ITicketService ticketService,
+           IMapper mapper, IUserService userService)
         {
             _eventService = eventService;
             _ticketService = ticketService;
             _mapper = mapper;
-            _cache = cache;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -139,9 +139,9 @@ namespace nwEventoMVCa.Web.Controllers
         {
             try
             {
-                var email = @User.Identity.Name;
+                var userDto = _userService.Get(CurrentUserId);
+                var email = userDto.Email;
                 _ticketService.Purchase(email, id, 1);
-
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
@@ -155,7 +155,8 @@ namespace nwEventoMVCa.Web.Controllers
         {
             try
             {
-                var email = @User.Identity.Name;
+                var userDto = _userService.Get(CurrentUserId);
+                var email = userDto.Email;
                 _ticketService.Cancel(email, id, 1);
 
                 return RedirectToAction(nameof(Index), controllerName: "Account");

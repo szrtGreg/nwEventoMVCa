@@ -24,6 +24,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li><a asp-area="" asp-controller="Cart" asp-action="Index">Cart</a></li>
+                    <li><a asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
                     <li><a asp-area="" asp-controller="Account" asp-action="Index">My Profile</a></li>
                     <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
                 }
@@ -32,7 +33,7 @@
                     <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
                 }
             </ul>
-            </div>
+        </div>
     </nav>
     <div class="container body-content">
         @RenderBody()
@@ -40,5 +41,7 @@
     <footer class="container-fluid">
         <p></p>
     </footer>
+    <script src="~/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
