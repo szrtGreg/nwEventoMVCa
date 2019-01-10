@@ -36,18 +36,18 @@ namespace nwEventoMVCa.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            var events = _cache.Get<IEnumerable<EventViewModel>>("events");
-            if (events == null)
-            {
-                Console.WriteLine("Fetching from service");
-                events = _eventService.GetAll().Select(e => new EventViewModel(e));
-                _cache.Set("events", events, TimeSpan.FromSeconds(20));
-            }
-            else
-            {
-                Console.WriteLine("Fetching from cache");
-            }
-            //var events = _eventService.GetAll().Select(e => new EventViewModel(e));
+            //var events = _cache.Get<IEnumerable<EventViewModel>>("events");
+            //if (events == null)
+            //{
+            //    Console.WriteLine("Fetching from service");
+            //    events = _eventService.GetAll().Select(e => new EventViewModel(e));
+            //    _cache.Set("events", events, TimeSpan.FromSeconds(20));
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Fetching from cache");
+            //}
+            var events = _eventService.GetAll().Select(e => new EventViewModel(e));
 
             return View(events);
         }
