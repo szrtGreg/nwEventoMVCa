@@ -26,10 +26,10 @@ namespace nwEventoMVCa.Core.Services
 
             }
 
-            for (var i = 1; i < 5; i++)
-            {
-                _productService.Add($"Product{i}");
-            }
+            //for (var i = 1; i < 5; i++)
+            //{
+            //    _productService.Add($"Product{i}");
+            //}
         }
     }
 }

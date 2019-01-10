@@ -12,10 +12,13 @@ namespace nwEventoMVCa.Web.Models
 
         public string Name { get; set; }
 
+        public decimal Price { get; set; }
+
         public ProductViewModel(ProductDto dto)
         {
             Id = dto.Id;
             Name = dto.Name;
+            Price = dto.Price;
         }
     }
 }

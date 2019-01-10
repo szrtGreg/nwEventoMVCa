@@ -38,9 +38,9 @@ namespace nwEventoMVCa.Core.Services
             return product == null ? null : _mapper.Map<ProductDto>(product);
         }
 
-        public void Add(string name)
+        public void Add(string name, decimal price)
         {
-            var product = new Product(name);
+            var product = new Product(name, price);
             _productRepository.Add(product);
         }
 

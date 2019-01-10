@@ -10,7 +10,12 @@
                     <div class="card">
                         <div class="card-block">
                             <h4 class="card-title">@product.Name</h4>
+                            <h6 class="card-subtitle mb-2 text-muted">Price: @product.Price</h6>
                             <h6 class="card-subtitle mb-2 text-muted">Id: @product.Id</h6>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="#" title="Add to cart" class="card-link">Add to cart</a>
+                            }
                         </div>
                     </div>
                 </div>

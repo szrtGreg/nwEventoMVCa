@@ -9,7 +9,7 @@ namespace nwEventoMVCa.Core.Services
     {
         ProductDto Get(Guid id);
         IEnumerable<ProductDto> GetAll();
-        void Add(string name);
+        void Add(string name, decimal price);
         void Update(ProductDto product);
     }
 }
