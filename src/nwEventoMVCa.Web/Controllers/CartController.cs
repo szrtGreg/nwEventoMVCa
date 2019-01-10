@@ -1,15 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using nwEventoMVCa.Core.Services;
 using nwEventoMVCa.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace nwEventoMVCa.Web.Controllers
 {
     [Route("cart")]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class CartController : Controller
     {
         private readonly IMemoryCache _cache;
@@ -55,7 +59,7 @@ namespace nwEventoMVCa.Web.Controllers
             }
             _cache.Set($"{User.Identity.Name}:cart", cart);
 
-            return Ok();
+            return RedirectToAction("Index", "Products");
         }
     }
 }
