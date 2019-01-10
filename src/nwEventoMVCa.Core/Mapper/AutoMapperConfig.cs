@@ -20,6 +20,7 @@ namespace nwEventoMVCa.Core.Mapper
                 cfg.CreateMap<Event, EventDetailsDto>();
                 cfg.CreateMap<Ticket, TicketDto>();
                 cfg.CreateMap<User, UserDto>();
+                cfg.CreateMap<Product, ProductDto>();
             }).CreateMapper();
     }
 }
