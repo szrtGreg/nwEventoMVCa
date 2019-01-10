@@ -6,6 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
 using nwEventoMVCa.Core.Services;
+using nwEventoMVCa.Web.Framework;
 using nwEventoMVCa.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 namespace nwEventoMVCa.Web.Controllers
 {
     [Route("events")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [CookieAuth]
     public class EventsController : Controller
     {
         private readonly IEventService _eventService;

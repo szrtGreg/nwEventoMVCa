@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using nwEventoMVCa.Core.Services;
+using nwEventoMVCa.Web.Framework;
 using nwEventoMVCa.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 namespace nwEventoMVCa.Web.Controllers
 {
     [Route("products")]
+    [CookieAuth("require-admin")]
     public class ProductsController : Controller
     {
         private readonly IProductService _productService;
@@ -19,6 +22,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var products = _productService

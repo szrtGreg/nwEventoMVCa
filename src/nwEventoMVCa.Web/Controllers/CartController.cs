@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using nwEventoMVCa.Core.Services;
+using nwEventoMVCa.Web.Framework;
 using nwEventoMVCa.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 namespace nwEventoMVCa.Web.Controllers
 {
     [Route("cart")]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [CookieAuth]
     public class CartController : BaseController
     {
         private readonly ICartService _cartService;

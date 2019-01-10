@@ -15,6 +15,11 @@ namespace nwEventoMVCa.Core.Domain
 
         public Order(User user, Cart cart)
         {
+            if (cart.IsEmpty)
+            {
+                throw new Exception("Can not create an order for empty cart.");
+            }
+
             Id = Guid.NewGuid();
             UserId = user.Id;
             Items = cart.Items.Select(x => new OrderItem(x));

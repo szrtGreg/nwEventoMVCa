@@ -95,7 +95,13 @@ namespace nwEventoMVCa.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
             await HttpContext.SignOutAsync();
-            _cartService.Delete(CurrentUserId);
+            try
+            {
+                _cartService.Delete(CurrentUserId);
+            }
+            catch
+            {
+            }
             return RedirectToAction("Index", "Home");
         }
     }
