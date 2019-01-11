@@ -14,7 +14,7 @@
                             <h6 class="card-subtitle mb-2 text-muted">Id: @product.Id</h6>
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <button type="button" class="btn btn-primary add-to-cart" data-id="@product.Id">Add to cart</button>
+                                <a asp-action="add"  asp-controller="cart" asp-route-productId="@product.Id" title="Add product" class="btn btn-success">Add</a>
                             }
                         </div>
                     </div>

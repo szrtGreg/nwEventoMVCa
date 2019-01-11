@@ -71,7 +71,9 @@ namespace nwEventoMVCa.Core.Services
 
         public void DeleteProduct(Guid userId, Guid productId)
         {
-            throw new Exception();
+            var cart = GetCartOrFail(userId);
+            cart.DeleteProduct(productId);
+            _cartManager.Delete(userId);
         }
 
         private Cart GetCartOrFail(Guid userId)
