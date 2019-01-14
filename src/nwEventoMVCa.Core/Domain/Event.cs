@@ -15,6 +15,8 @@ namespace nwEventoMVCa.Core.Domain
 
         public decimal Price { get; protected set; }
 
+        public string ImageThumbnailUrl { get; set; }
+
         private ISet<Ticket> _tickets = new HashSet<Ticket>();
 
         public IEnumerable<Ticket> Tickets => _tickets;
@@ -29,6 +31,7 @@ namespace nwEventoMVCa.Core.Domain
             SetName(name);
             SetCategory(category);
             SetPrice(price);
+            ImageThumbnailUrl = "/images/event-banner-small.jpeg";
         }
 
         public void AddTickets(int amount)

@@ -1,0 +1,54 @@
+﻿@using nwEventoMVCa.Core.DTO;
+@model EventViewModel
+@{
+    var isAdmin = User.IsInRole(RoleDto.Admin.ToString());
+}
+
+<div class="col-sm-3">
+    <div class="btn-group" role="group" style="text-align:center">
+            @if (isAdmin)
+            {
+                <a class="btn btn-primary" asp-action="Update" asp-route-id="@Model.Id" title="Update event">
+                    <i class="fas fa-edit"></i>
+                </a>
+            }
+            @if (isAdmin)
+            {
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.Id" title="Details event">
+                    <i class="fas fa-list-alt"></i>
+                </a>
+            }
+            @if (isAdmin)
+            {
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id" title="Delete event">
+                    <i class="far fa-trash-alt"></i>
+                </a>
+            }
+    </div>
+    <div class="thumbnail">
+        <img src="@Model.ImageThumbnailUrl" alt="" />
+
+        <div class="caption">
+            <h3 class="pull-right">@Model.Price.ToString("c")</h3>
+            <h3>
+                <a href="#">@Model.Name</a>
+            </h3>
+            <p>@Model.Category</p>
+            @if (isAdmin)
+            {
+                <h6 class="card-subtitle mb-2 text-muted">@Model.Id</h6>
+                <h6 class="card-subtitle mb-2 text-muted">TicketsCount: @Model.TicketsCount</h6>
+            }
+            <h6 class="card-subtitle mb-2 text-muted">AvailableTickets: @Model.AvailableTicketsCount</h6>
+            <div>
+                <form id="@Model.Id" asp-action="purchase"
+                      asp-controller="events" asp-route-id="@Model.Id" method="post">
+                    <input type="hidden" asp-for="@Model.Id" />
+                    <button type="submit" class="btn btn-success">
+                        Attend
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

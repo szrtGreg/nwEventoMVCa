@@ -25,7 +25,7 @@ namespace nwEventoMVCa.Web.Controllers
 
         public AccountController(IUserService userService, 
             ITicketService ticketService,
-            ICartService cartService,
+            ICartService cartService, 
             IMapper mapper)
         {
             _userService = userService;
@@ -37,16 +37,18 @@ namespace nwEventoMVCa.Web.Controllers
         public IActionResult Index()
         {
             var userDto = _userService.Get(CurrentUserId);
-            var ticketsDto = _ticketService.GetTicketsForUser(userDto.Email);
-
-            var viewModel = new UserProfileViewModel()
-            {
-                UserViewModel = _mapper.Map<UserViewModel>(userDto),
-                TicketsViewModel = _mapper.Map<IEnumerable<TicketViewModel>>(ticketsDto)
-            };
-
+            var viewModel = _mapper.Map<UserViewModel>(userDto);
             return View(viewModel);
          }
+
+        [HttpGet("events")]
+        public IActionResult PurchasedEvents()
+        {
+            var userDto = _userService.Get(CurrentUserId);
+            var ticketsDto = _ticketService.GetTicketsForUser(userDto.Email);
+            var viewModel = _mapper.Map<IEnumerable<TicketViewModel>>(ticketsDto);
+            return View(viewModel);
+        }
 
         [AllowAnonymous]
         [HttpGet("login")]
@@ -77,6 +79,7 @@ namespace nwEventoMVCa.Web.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 
