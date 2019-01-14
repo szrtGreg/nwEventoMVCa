@@ -88,6 +88,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpGet("logout")]
+
         public async Task<IActionResult> Logout()
         {
             if (!User.Identity.IsAuthenticated)
@@ -103,6 +104,32 @@ namespace nwEventoMVCa.Web.Controllers
             {
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet("register")]
+        [AllowAnonymous]
+        public IActionResult Register()
+           => View(new RegisterViewModel());
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+            try
+            {
+                _userService.Register(viewModel.Email, viewModel.Password, viewModel.Role);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(viewModel);
+            }
+            return RedirectToAction(nameof(Login));
         }
     }
 }

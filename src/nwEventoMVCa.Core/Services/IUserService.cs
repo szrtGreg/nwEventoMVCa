@@ -10,5 +10,6 @@ namespace nwEventoMVCa.Core.Services
         UserDto Get(Guid userId);
         UserDto Get(string email);
         void Login(string email, string password);
+        void Register(string email, string password, RoleDto role);
     }
 }
