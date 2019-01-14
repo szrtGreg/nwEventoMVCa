@@ -40,20 +40,21 @@ namespace nwEventoMVCa.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("items/{productId}")]
+        [HttpGet("{productId}/add")]
         public IActionResult Add(Guid productId)
         {
             _cartService.AddProduct(CurrentUserId, productId);
 
-            return Ok();
+            return RedirectToAction(nameof(Index));
         }
 
 
-        [HttpDelete("items/{productId}")]
+        [HttpGet("{productId}/delete")]
         public IActionResult Delete(Guid productId)
         {
             _cartService.DeleteProduct(CurrentUserId, productId);
-            return Ok();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
