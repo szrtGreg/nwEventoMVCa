@@ -79,7 +79,6 @@ namespace nwEventoMVCa.Web.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
 

@@ -9,6 +9,6 @@ namespace nwEventoMVCa.Web.Controllers
     public abstract class BaseController : Controller
     {
         protected Guid CurrentUserId => User.Identity.IsAuthenticated ?
-                Guid.Parse(User.Identity.Name) : Guid.Empty;
+                Guid.Parse(User.Identity.Name)  : Guid.Empty;
     }
 }
