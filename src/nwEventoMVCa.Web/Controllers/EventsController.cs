@@ -35,7 +35,8 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        [HttpGet("{eventPage}")]
+        public IActionResult Index(int eventPage)
         {
             //var events = _cache.Get<IEnumerable<EventViewModel>>("events");
             //if (events == null)
@@ -48,7 +49,7 @@ namespace nwEventoMVCa.Web.Controllers
             //{
             //    Console.WriteLine("Fetching from cache");
             //}
-            var events = _eventService.GetAll().Select(e => new EventViewModel(e));
+            var events = _eventService.GetEventPage(eventPage).Select(e => new EventViewModel(e));
 
             return View(events);
         }
