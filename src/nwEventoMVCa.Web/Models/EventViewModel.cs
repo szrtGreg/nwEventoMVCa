@@ -17,6 +17,8 @@ namespace nwEventoMVCa.Web.Models
 
         public decimal Price { get; set; }
 
+        public string ImageThumbnailUrl { get; set; }
+
         public int TicketsCount { get; set; }
 
         public int AvailableTicketsCount { get; set; }
@@ -33,6 +35,7 @@ namespace nwEventoMVCa.Web.Models
             Name = dto.Name;
             Category = dto.Category;
             Price = dto.Price;
+            ImageThumbnailUrl = dto.ImageThumbnailUrl;
             TicketsCount = dto.TicketsCount;
             AvailableTicketsCount = dto.AvailableTicketsCount;
         }

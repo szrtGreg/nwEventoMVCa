@@ -14,6 +14,7 @@ namespace nwEventoMVCa.Web.Framework
         {
             AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme;
             Policy = policy;
+            
         }
     }
 }

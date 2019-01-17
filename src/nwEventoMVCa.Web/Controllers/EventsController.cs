@@ -134,7 +134,7 @@ namespace nwEventoMVCa.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("{id}/purchase")]
+        [HttpPost("{id}/purchase")]
         public IActionResult Purchase(Guid id)
         {
             try
@@ -159,7 +159,7 @@ namespace nwEventoMVCa.Web.Controllers
                 var email = userDto.Email;
                 _ticketService.Cancel(email, id, 1);
 
-                return RedirectToAction(nameof(Index), controllerName: "Account");
+                return RedirectToAction("PurchasedEvents", controllerName: "Account");
             }
             catch (Exception)
             {

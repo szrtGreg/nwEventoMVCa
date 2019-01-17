@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
 using nwEventoMVCa.Core.Extensions;
 using nwEventoMVCa.Core.Repositories;
@@ -44,6 +45,19 @@ namespace nwEventoMVCa.Core.Services
             {
                 throw new Exception("Invalid password.");
             }
-        }      
+        }
+
+        public void Register(string email, string password, RoleDto role)
+        {
+            var user = _userRepository.Get(email);
+            if (user != null)
+            {
+                throw new Exception($"User '{email}' already exists.");
+            }
+            var userRole = (Role)Enum.Parse(typeof(Role), role.ToString(), true);
+            user = new User(email, password, userRole);
+
+            _userRepository.Add(user);
+        }
     }
 }

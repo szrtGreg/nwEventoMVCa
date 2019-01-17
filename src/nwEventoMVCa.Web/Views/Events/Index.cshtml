@@ -8,12 +8,22 @@
 {
     <div class="row">
         <div class="col-lg-6">
-            <a asp-area="" asp-controller="Events" asp-action="Add" class="btn btn-primary">Add Event</a>
+            <a asp-area="" asp-controller="Events" asp-action="Add" class="btn btn-primary">
+                <i class="fas fa-plus"></i>&nbsp; Add Event</a>
         </div>
     </div>
 }
+<br />
+    <div class="row">
+        @{
+            foreach (var even in Model)
+            {
+                @Html.Partial("EventSummary", even)
+            }
+        }
+    </div>
 
-<div class="row">
+@*<div class="row">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12">
@@ -53,4 +63,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@

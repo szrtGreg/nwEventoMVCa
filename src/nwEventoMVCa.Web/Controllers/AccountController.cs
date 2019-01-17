@@ -25,7 +25,7 @@ namespace nwEventoMVCa.Web.Controllers
 
         public AccountController(IUserService userService, 
             ITicketService ticketService,
-            ICartService cartService,
+            ICartService cartService, 
             IMapper mapper)
         {
             _userService = userService;
@@ -37,16 +37,18 @@ namespace nwEventoMVCa.Web.Controllers
         public IActionResult Index()
         {
             var userDto = _userService.Get(CurrentUserId);
-            var ticketsDto = _ticketService.GetTicketsForUser(userDto.Email);
-
-            var viewModel = new UserProfileViewModel()
-            {
-                UserViewModel = _mapper.Map<UserViewModel>(userDto),
-                TicketsViewModel = _mapper.Map<IEnumerable<TicketViewModel>>(ticketsDto)
-            };
-
+            var viewModel = _mapper.Map<UserViewModel>(userDto);
             return View(viewModel);
          }
+
+        [HttpGet("events")]
+        public IActionResult PurchasedEvents()
+        {
+            var userDto = _userService.Get(CurrentUserId);
+            var ticketsDto = _ticketService.GetTicketsForUser(userDto.Email);
+            var viewModel = _mapper.Map<IEnumerable<TicketViewModel>>(ticketsDto);
+            return View(viewModel);
+        }
 
         [AllowAnonymous]
         [HttpGet("login")]
@@ -88,6 +90,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpGet("logout")]
+
         public async Task<IActionResult> Logout()
         {
             if (!User.Identity.IsAuthenticated)
@@ -103,6 +106,32 @@ namespace nwEventoMVCa.Web.Controllers
             {
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet("register")]
+        [AllowAnonymous]
+        public IActionResult Register()
+           => View(new RegisterViewModel());
+
+        [HttpPost("register")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+            try
+            {
+                _userService.Register(viewModel.Email, viewModel.Password, viewModel.Role);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(viewModel);
+            }
+            return RedirectToAction(nameof(Login));
         }
     }
 }
