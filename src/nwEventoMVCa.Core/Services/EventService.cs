@@ -36,6 +36,14 @@ namespace nwEventoMVCa.Core.Services
             return events;
         }
 
+        public IEnumerable<EventDto> GetEventPage(int eventPage)
+        {
+            var events = _eventRepository.GetEventPage(eventPage)
+                .Select(e => _mapper.Map<EventDto>(e));
+
+            return events;
+        }
+
         public void Add(Guid id, string name, string category, decimal price)
         {
             var @event = new Event(id, name, category, price);

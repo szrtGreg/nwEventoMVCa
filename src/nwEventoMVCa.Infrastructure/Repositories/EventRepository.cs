@@ -23,6 +23,9 @@ namespace nwEventoMVCa.Infrastructure.Repositories
         public IEnumerable<Event> GetAll()
             => _events;
 
+        public IEnumerable<Event> GetEventPage(int eventPage)
+            => _events.Skip((eventPage-1) * 4).Take(4);
+
         public void Add(Event @event)
             => _events.Add(@event);
 

@@ -18,7 +18,7 @@ namespace nwEventoMVCa.Core.Services
 
         public void Seed()
         {
-            for (var i = 1; i < 5; i++)
+            for (var i = 1; i < 10; i++)
             {
                 var eventId = Guid.NewGuid();
                 _eventService.Add(eventId, $"Event{i}", "darmowe", i*12);

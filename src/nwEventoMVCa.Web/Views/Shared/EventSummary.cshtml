@@ -3,27 +3,30 @@
 @{
     var isAdmin = User.IsInRole(RoleDto.Admin.ToString());
 }
+@{
+    var id = ViewContext.RouteData.Values["eventPage"];
+}
 
 <div class="col-sm-3">
     <div class="btn-group" role="group" style="text-align:center">
-            @if (isAdmin)
-            {
-                <a class="btn btn-primary" asp-action="Update" asp-route-id="@Model.Id" title="Update event">
-                    <i class="fas fa-edit"></i>
-                </a>
-            }
-            @if (isAdmin)
-            {
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.Id" title="Details event">
-                    <i class="fas fa-list-alt"></i>
-                </a>
-            }
-            @if (isAdmin)
-            {
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id" title="Delete event">
-                    <i class="far fa-trash-alt"></i>
-                </a>
-            }
+        @if (isAdmin)
+        {
+            <a class="btn btn-primary" asp-action="Update" asp-route-id="@Model.Id" title="Update event">
+                <i class="fas fa-edit"></i>
+            </a>
+        }
+        @if (isAdmin)
+        {
+            <a class="btn btn-info" asp-action="Details" asp-route-id="@Model.Id" title="Details event">
+                <i class="fas fa-list-alt"></i>
+            </a>
+        }
+        @if (isAdmin)
+        {
+            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id" title="Delete event">
+                <i class="far fa-trash-alt"></i>
+            </a>
+        }
     </div>
     <div class="thumbnail">
         <img src="@Model.ImageThumbnailUrl" alt="" />
@@ -44,6 +47,8 @@
                 <form id="@Model.Id" asp-action="purchase"
                       asp-controller="events" asp-route-id="@Model.Id" method="post">
                     <input type="hidden" asp-for="@Model.Id" />
+                    <input type="hidden" name="currentEventId" value="@ViewContext.RouteData.Values["eventPage"]" />
+                    <input type="hidden" name="returnUrl" value="" />
                     <button type="submit" class="btn btn-success">
                         Attend
                     </button>

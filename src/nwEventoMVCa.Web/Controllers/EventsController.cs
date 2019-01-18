@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
@@ -35,25 +36,24 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index()
+        [HttpGet("{eventPage}")]
+        public IActionResult Index(int eventPage)
         {
-            //var events = _cache.Get<IEnumerable<EventViewModel>>("events");
-            //if (events == null)
-            //{
-            //    Console.WriteLine("Fetching from service");
-            //    events = _eventService.GetAll().Select(e => new EventViewModel(e));
-            //    _cache.Set("events", events, TimeSpan.FromSeconds(20));
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Fetching from cache");
-            //}
-            var events = _eventService.GetAll().Select(e => new EventViewModel(e));
-
-            return View(events);
+            var viewModel = new EventListWithPagination()
+            {
+                EventViewModels = _eventService.GetEventPage(eventPage).Select(e => new EventViewModel(e)),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = eventPage,
+                    ItemsPerPage = 4,
+                    TotalItems = 10
+                },
+                CurrentCategory = null
+            };
+            return View(viewModel);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{eventPage}/{id}")]
         [Authorize(Policy = "require-admin")]
         public IActionResult Details(Guid id)
         {
@@ -88,12 +88,12 @@ namespace nwEventoMVCa.Web.Controllers
             _eventService.Add(eventId, viewModel.Name, viewModel.Category, viewModel.Price);
             _eventService.AddTickets(eventId, viewModel.TicketsCount);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { eventPage = 1});
         }
 
-        [HttpGet("{id}/update")]
+        [HttpGet("{id}/update/{eventPage}")]
         [Authorize(Policy = "require-admin")]
-        public IActionResult Update(Guid id)
+        public IActionResult Update(Guid id, int  eventPage)
         {
             var @event = _eventService.Get(id);
             if (@event == null)
@@ -105,9 +105,9 @@ namespace nwEventoMVCa.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("{id}/update")]
+        [HttpPost("{id}/update/{eventPage}")]
         [Authorize(Policy = "require-admin")]
-        public IActionResult Update(AddOrUpdateEventViewModel viewModel)
+        public IActionResult Update(AddOrUpdateEventViewModel viewModel, int eventPage)
         {
             if (!ModelState.IsValid)
             {
@@ -122,27 +122,28 @@ namespace nwEventoMVCa.Web.Controllers
                 Category = viewModel.Category
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { eventPage });
         }
 
-        [HttpGet("{id}/delete")]
+        [HttpGet("{id}/delete/{eventPage}")]
         [Authorize(Policy = "require-admin")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(Guid id, int eventPage)
         {
             _eventService.Delete(id);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { eventPage });
         }
 
         [HttpPost("{id}/purchase")]
-        public IActionResult Purchase(Guid id)
+        public IActionResult Purchase(Guid id, int currentEventId)
         {
             try
             {
                 var userDto = _userService.Get(CurrentUserId);
                 var email = userDto.Email;
                 _ticketService.Purchase(email, id, 1);
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index), new { eventPage = currentEventId });
             }
             catch (Exception)
             {
