@@ -91,9 +91,9 @@ namespace nwEventoMVCa.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("{id}/update")]
+        [HttpGet("{id}/update/{eventPage}")]
         [Authorize(Policy = "require-admin")]
-        public IActionResult Update(Guid id)
+        public IActionResult Update(Guid id, int  eventPage)
         {
             var @event = _eventService.Get(id);
             if (@event == null)
@@ -105,9 +105,9 @@ namespace nwEventoMVCa.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("{id}/update")]
+        [HttpPost("{id}/update/{eventPage}")]
         [Authorize(Policy = "require-admin")]
-        public IActionResult Update(AddOrUpdateEventViewModel viewModel)
+        public IActionResult Update(AddOrUpdateEventViewModel viewModel, int eventPage)
         {
             if (!ModelState.IsValid)
             {
@@ -122,7 +122,7 @@ namespace nwEventoMVCa.Web.Controllers
                 Category = viewModel.Category
             });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { eventPage });
         }
 
         [HttpGet("{id}/delete")]
