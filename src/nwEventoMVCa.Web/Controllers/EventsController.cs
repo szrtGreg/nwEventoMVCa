@@ -125,13 +125,13 @@ namespace nwEventoMVCa.Web.Controllers
             return RedirectToAction(nameof(Index), new { eventPage });
         }
 
-        [HttpGet("{id}/delete")]
+        [HttpGet("{id}/delete/{eventPage}")]
         [Authorize(Policy = "require-admin")]
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(Guid id, int eventPage)
         {
             _eventService.Delete(id);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { eventPage });
         }
 
         [HttpPost("{id}/purchase")]
