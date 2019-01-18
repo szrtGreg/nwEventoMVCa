@@ -88,7 +88,7 @@ namespace nwEventoMVCa.Web.Controllers
             _eventService.Add(eventId, viewModel.Name, viewModel.Category, viewModel.Price);
             _eventService.AddTickets(eventId, viewModel.TicketsCount);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { eventPage = 1});
         }
 
         [HttpGet("{id}/update/{eventPage}")]
