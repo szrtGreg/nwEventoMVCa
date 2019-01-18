@@ -48,7 +48,6 @@
                       asp-controller="events" asp-route-id="@Model.Id" method="post">
                     <input type="hidden" asp-for="@Model.Id" />
                     <input type="hidden" name="currentEventId" value="@ViewContext.RouteData.Values["eventPage"]" />
-                    <input type="hidden" name="returnUrl" value="" />
                     <button type="submit" class="btn btn-success">
                         Attend
                     </button>

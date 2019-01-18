@@ -142,7 +142,8 @@ namespace nwEventoMVCa.Web.Controllers
                 var userDto = _userService.Get(CurrentUserId);
                 var email = userDto.Email;
                 _ticketService.Purchase(email, id, 1);
-
+                var eventDetailsViewModel = _eventService.Get(id);
+                TempData["message"] = $"Event {eventDetailsViewModel.Name} was added";
                 return RedirectToAction(nameof(Index), new { eventPage = currentEventId });
             }
             catch (Exception)
@@ -159,7 +160,6 @@ namespace nwEventoMVCa.Web.Controllers
                 var userDto = _userService.Get(CurrentUserId);
                 var email = userDto.Email;
                 _ticketService.Cancel(email, id, 1);
-
                 return RedirectToAction("PurchasedEvents", controllerName: "Account");
             }
             catch (Exception)

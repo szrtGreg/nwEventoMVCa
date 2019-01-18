@@ -9,6 +9,18 @@
     function addCartItem(productId) {
         $.post(`cart/items/${productId}`, response => {
             console.log(`Product with id: ${productId} was added to the cart.`);
-        });
+        })
     }
 })();
+
+
+
+//<script>
+//    toastr.options = {
+//        "positionClass": "toast-top-center"
+//}
+//document.getElementById('updateDetails')
+//                .addEventListener('click', function () {
+//        toastr["success"]("fdfdfdf");
+//    })
+//        </script>
