@@ -53,7 +53,7 @@ namespace nwEventoMVCa.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{eventPage}/{id}")]
         [Authorize(Policy = "require-admin")]
         public IActionResult Details(Guid id)
         {
