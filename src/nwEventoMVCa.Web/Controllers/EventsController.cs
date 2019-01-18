@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using nwEventoMVCa.Core.Domain;
 using nwEventoMVCa.Core.DTO;
@@ -38,20 +39,18 @@ namespace nwEventoMVCa.Web.Controllers
         [HttpGet("{eventPage}")]
         public IActionResult Index(int eventPage)
         {
-            //var events = _cache.Get<IEnumerable<EventViewModel>>("events");
-            //if (events == null)
-            //{
-            //    Console.WriteLine("Fetching from service");
-            //    events = _eventService.GetAll().Select(e => new EventViewModel(e));
-            //    _cache.Set("events", events, TimeSpan.FromSeconds(20));
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Fetching from cache");
-            //}
-            var events = _eventService.GetEventPage(eventPage).Select(e => new EventViewModel(e));
-
-            return View(events);
+            var viewModel = new EventListWithPagination()
+            {
+                EventViewModels = _eventService.GetEventPage(eventPage).Select(e => new EventViewModel(e)),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = eventPage,
+                    ItemsPerPage = 4,
+                    TotalItems = 10
+                },
+                CurrentCategory = null
+            };
+            return View(viewModel);
         }
 
         [HttpGet("{id}")]
@@ -136,14 +135,15 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpPost("{id}/purchase")]
-        public IActionResult Purchase(Guid id)
+        public IActionResult Purchase(Guid id, int currentEventId)
         {
             try
             {
                 var userDto = _userService.Get(CurrentUserId);
                 var email = userDto.Email;
                 _ticketService.Purchase(email, id, 1);
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index), new { eventPage = currentEventId });
             }
             catch (Exception)
             {

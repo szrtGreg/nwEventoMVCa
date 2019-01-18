@@ -23,7 +23,6 @@ namespace nwEventoMVCa.Web.Models
 
         public int AvailableTicketsCount { get; set; }
 
-
         public EventViewModel()
         {
 
