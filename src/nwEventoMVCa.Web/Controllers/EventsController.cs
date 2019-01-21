@@ -143,7 +143,7 @@ namespace nwEventoMVCa.Web.Controllers
                 var email = userDto.Email;
                 _ticketService.Purchase(email, id, 1);
                 var eventDetailsViewModel = _eventService.Get(id);
-                TempData["message"] = $"Event {eventDetailsViewModel.Name} was added";
+                TempData["message"] = $"{eventDetailsViewModel.Name} was added";
                 return RedirectToAction(nameof(Index), new { eventPage = currentEventId });
             }
             catch (Exception)
