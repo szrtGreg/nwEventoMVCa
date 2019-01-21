@@ -11,10 +11,18 @@
                         <div class="card-block">
                             <h4 class="card-title">@product.Name</h4>
                             <h6 class="card-subtitle mb-2 text-muted">Price: @product.Price</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">Id: @product.Id</h6>
+                            @*<h6 class="card-subtitle mb-2 text-muted">Id: @product.Id</h6>*@
                             @if (User.Identity.IsAuthenticated)
                             {
-                                <a asp-action="add"  asp-controller="cart" asp-route-productId="@product.Id" title="Add product" class="btn btn-success">Add</a>
+                            <form id="@product.Id" asp-action="add"
+                                  asp-controller="cart" asp-route-productId="@product.Id" method="post">
+                                <input type="hidden" asp-for="@product.Id" />
+                                <input type="hidden" name="returnUrl"
+                                       value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                <button type="submit" class="btn btn-success">
+                                    Buy
+                                </button>
+                            </form>
                             }
                         </div>
                     </div>

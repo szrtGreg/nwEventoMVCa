@@ -9,5 +9,6 @@ namespace nwEventoMVCa.Web.Models
     {
         public IList<CartItemViewModel> Items { get; set; }
         public decimal TotalPrice { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

@@ -9,8 +9,8 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>EventId</th>
-                                <th>Id</th>
+                                <th>Event Name</th>
+                                <th>TicketId</th>
                                 <th>Seating</th>
                                 <th>Actions</th>
                             </tr>
@@ -19,7 +19,7 @@
                             @foreach (var ticket in Model)
                             {
                                 <tr>
-                                    <td>@ticket.EventId</td>
+                                    <td>@ticket.EventName</td>
                                     <td>@ticket.Id</td>
                                     <td>@ticket.Seating</td>
                                     <td>

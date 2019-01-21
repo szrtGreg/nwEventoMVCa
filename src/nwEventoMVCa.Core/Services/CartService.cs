@@ -73,7 +73,7 @@ namespace nwEventoMVCa.Core.Services
         {
             var cart = GetCartOrFail(userId);
             cart.DeleteProduct(productId);
-            _cartManager.Delete(userId);
+            //_cartManager.Delete(userId);
         }
 
         private Cart GetCartOrFail(Guid userId)

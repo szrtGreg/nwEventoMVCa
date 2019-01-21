@@ -10,6 +10,8 @@ namespace nwEventoMVCa.Core.Domain
 
         public Guid EventId { get; protected set; }
 
+        public string EventName { get; protected set; }
+
         public int Seating { get; protected set; }
 
         public Guid? UserId { get; protected set; }
@@ -25,6 +27,7 @@ namespace nwEventoMVCa.Core.Domain
             Id = Guid.NewGuid();
             EventId = @event.Id;
             Seating = seating;
+            EventName = @event.Name;
         }
 
         public void Purchase(User user)
