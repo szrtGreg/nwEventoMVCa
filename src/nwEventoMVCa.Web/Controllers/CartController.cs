@@ -36,7 +36,7 @@ namespace nwEventoMVCa.Web.Controllers
                 cart = _cartService.Get(CurrentUserId);
             }
             var viewModel = _mapper.Map<CartViewModel>(cart);
-            viewModel.ReturnUrl = returnUrl;
+            viewModel.ReturnUrl = "/products";
 
             return View(viewModel);
         }
