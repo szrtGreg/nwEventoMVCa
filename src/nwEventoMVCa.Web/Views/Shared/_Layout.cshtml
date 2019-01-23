@@ -26,17 +26,21 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a asp-area="" asp-controller="events" asp-action="Index" asp-route-eventPage="1">Events</a></li>
-                <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
                 @if (User.Identity.IsAuthenticated)
                 {
-
+                    <li><a asp-controller="Account" asp-action="PurchasedEvents">My Events</a></li>
+                }
+                <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a asp-controller="Cart" asp-action="Index">My Cart</a></li>
+                    <li><a asp-controller="Orders" asp-action="Index">My Orders</a></li>
+                    <li>@await Component.InvokeAsync("CartSummary")</li>
                 }
             </ul>
             <partial name="_LoginPartial">
-
-        </div>
+            
+</div>
     </nav>
     <div class="container body-content">
         @if (TempData["message"] != null)
