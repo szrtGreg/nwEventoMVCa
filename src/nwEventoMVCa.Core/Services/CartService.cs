@@ -61,6 +61,7 @@ namespace nwEventoMVCa.Core.Services
 
         public void Create(Guid userId)
         {
+            _cartManager.Delete(userId);
             var cart = _cartManager.Get(userId);
             if (cart != null)
             {
