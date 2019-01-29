@@ -5,8 +5,8 @@
 
     @*Toast*@
     @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>*@
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>*@
+    @*My css*@
     @*Awesome fonts*@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <!-- Latest compiled and minified CSS -->
@@ -16,6 +16,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/my.css" />
 </head>
 <body>
     <nav class="navbar navbar-inverse">
@@ -25,17 +26,21 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a asp-area="" asp-controller="events" asp-action="Index" asp-route-eventPage="1">Events</a></li>
-                <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
-            </ul>
-            <ul class="nav navbar-nav">
                 @if (User.Identity.IsAuthenticated)
                 {
-
+                    <li><a asp-controller="Account" asp-action="PurchasedEvents">My Events</a></li>
+                }
+                <li><a asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a asp-controller="Cart" asp-action="Index">My Cart</a></li>
+                    <li><a asp-controller="Orders" asp-action="Index">My Orders</a></li>
+                    <li>@await Component.InvokeAsync("CartSummary")</li>
                 }
             </ul>
             <partial name="_LoginPartial">
-
-        </div>
+            
+</div>
     </nav>
     <div class="container body-content">
         @if (TempData["message"] != null)

@@ -8,5 +8,6 @@ namespace nwEventoMVCa.Core.DTO
     {
         public IEnumerable<CartItemDto> Items { get; set; }
         public decimal TotalPrice { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

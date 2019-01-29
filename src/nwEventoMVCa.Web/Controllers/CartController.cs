@@ -27,7 +27,7 @@ namespace nwEventoMVCa.Web.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl)
         {
             var cart = _cartService.Get(CurrentUserId);
             if (cart == null)
@@ -36,16 +36,17 @@ namespace nwEventoMVCa.Web.Controllers
                 cart = _cartService.Get(CurrentUserId);
             }
             var viewModel = _mapper.Map<CartViewModel>(cart);
+            viewModel.ReturnUrl = "/products";
 
             return View(viewModel);
         }
 
-        [HttpGet("{productId}/add")]
-        public IActionResult Add(Guid productId)
+        [HttpPost("{productId}/add")]
+        public IActionResult Add(Guid productId, string returnUrl)
         {
             _cartService.AddProduct(CurrentUserId, productId);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { returnUrl });
         }
 
 

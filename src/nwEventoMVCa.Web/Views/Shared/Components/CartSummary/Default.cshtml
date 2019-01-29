@@ -1,0 +1,9 @@
+﻿@model CartViewModel
+
+@if (Model.Items.Count() > 0)
+{
+    <a asp-controller="cart" asp-action="Index" asp-route-returnurl="@ViewContext.HttpContext.Request.PathAndQuery()">
+        <span class="glyphicon glyphicon-shopping-cart"></span>
+        <span id="cart-status">@Model.Items.Count()</span>
+    </a>
+}

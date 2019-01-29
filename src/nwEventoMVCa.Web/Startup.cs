@@ -41,7 +41,7 @@ namespace nwEventoMVCa.Web
              {
                  c.LoginPath = new PathString("/account/login");
                  c.AccessDeniedPath = new PathString("/forbidden");
-                 c.ExpireTimeSpan = TimeSpan.FromDays(7);
+                 c.ExpireTimeSpan = TimeSpan.FromMinutes(10);
              });
             services.AddAuthorization(a => a.AddPolicy("require-admin",
                 p => p.RequireRole(RoleDto.Admin.ToString())));

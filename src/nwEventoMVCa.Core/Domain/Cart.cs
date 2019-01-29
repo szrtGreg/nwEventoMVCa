@@ -11,6 +11,7 @@ namespace nwEventoMVCa.Core.Domain
         public IEnumerable<CartItem> Items => _items;
         public bool IsEmpty => !Items.Any();
         public decimal TotalPrice => Items.Sum(i => i.TotalPrice);
+        public string ReturnUrl { get; set; }
 
 
         public void AddProduct(Product product)

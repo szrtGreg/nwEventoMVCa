@@ -6,9 +6,6 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello @await Component.InvokeAsync("UserSummary") <span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li><a asp-controller="Account" asp-action="Index">My Account</a></li>
-                <li><a asp-controller="Cart" asp-action="Index">Cart</a></li>
-                <li><a asp-controller="Orders" asp-action="Index">Orders</a></li>
-                <li><a asp-controller="Account" asp-action="PurchasedEvents">My Events</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
             </ul>
