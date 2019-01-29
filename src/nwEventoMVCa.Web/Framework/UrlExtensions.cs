@@ -12,12 +12,5 @@ namespace nwEventoMVCa.Web.Framework
             request.QueryString.HasValue
                 ? $"{request.Path}{request.QueryString}"
                 : request.Path.ToString();
-
-
-
-        public static string PathId(this HttpRequest request) =>
-            request.QueryString.HasValue
-                ? $"3".ToString()
-                : request.Path.ToString();
     }
 }
