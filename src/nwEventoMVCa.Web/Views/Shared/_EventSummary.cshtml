@@ -11,7 +11,7 @@
     <div class="btn-group" role="group" style="text-align:center">
         @if (isAdmin)
         {
-            <a class="btn btn-primary" asp-action="Update" asp-route-id="@Model.Id" title="Update event">
+            <a class="btn btn-primary" asp-action="Update" asp-route-id="@Model.Id" asp-route-eventPage="@id" title="Update event">
                 <i class="fas fa-edit"></i>
             </a>
         }
