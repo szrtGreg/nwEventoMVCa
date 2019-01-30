@@ -20,8 +20,16 @@ namespace nwEventoMVCa.Infrastructure.Repositories
     public Event Get(Guid id)
             => _events.SingleOrDefault(x => x.Id == id);
 
-        public IEnumerable<Event> GetAll()
-            => _events;
+        public IEnumerable<Event> GetAll(string name = "")
+        {
+            var events = _events.AsEnumerable();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                events = events.Where(x => x.Name.ToLowerInvariant()
+                    .Contains(name.ToLowerInvariant()));
+            }
+            return events;
+        }
 
         public IEnumerable<Event> GetEventPage(int eventPage)
             => _events.Skip((eventPage-1) * 4).Take(4);

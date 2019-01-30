@@ -28,9 +28,9 @@ namespace nwEventoMVCa.Core.Services
             return _mapper.Map<EventDetailsDto>(@event);
         }
 
-        public IEnumerable<EventDto> GetAll()
+        public IEnumerable<EventDto> GetAll(string name)
         {
-            var events = _eventRepository.GetAll()
+            var events = _eventRepository.GetAll(name)
                 .Select(e => _mapper.Map<EventDto>(e));
 
             return events;

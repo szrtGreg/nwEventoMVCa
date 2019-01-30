@@ -8,7 +8,7 @@ namespace nwEventoMVCa.Core.Repositories
     public interface IEventRepository
     {
         Event Get(Guid id);
-        IEnumerable<Event> GetAll();
+        IEnumerable<Event> GetAll(string name);
         IEnumerable<Event> GetEventPage(int eventPage);
         void Add(Event @event);
         void Update(Event @event);
