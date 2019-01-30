@@ -53,6 +53,14 @@ namespace nwEventoMVCa.Web.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous]
+        public IActionResult GetAll(string searchString)
+        {
+            var events = _eventService.GetAll(searchString).Select(e => new EventViewModel(e));
+            ViewBag.SearchString = searchString;
+            return View(events);
+        }
+
         [HttpGet("{eventPage}/{id}")]
         [Authorize(Policy = "require-admin")]
         public IActionResult Details(Guid id)

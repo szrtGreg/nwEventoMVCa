@@ -38,7 +38,7 @@ namespace nwEventoMVCa.Core.Services
         {
             var user = _userRepository.GetOrFailUser(email);
             //rozbuduj za pomoca metody GetTicketsPurchasedByUser
-            var tickets = _eventRepository.GetAll().SelectMany(e => e.Tickets);
+            var tickets = _eventRepository.GetAll("").SelectMany(e => e.Tickets);
             var userTickets = tickets.Where(t => t.UserId == user.Id);
 
 

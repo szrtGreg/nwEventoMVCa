@@ -1,5 +1,5 @@
 ﻿@using nwEventoMVCa.Core.DTO;
-@model EventListWithPagination
+@model IEnumerable<EventViewModel>
 @{
     var isAdmin = User.IsInRole(RoleDto.Admin.ToString());
 }
@@ -18,20 +18,18 @@
 
 <partial name="_EventSearchBox" />
 
-<div class="row">
-    @{
-        foreach (var even in Model.EventViewModels)
+@if (Model.Any())
+{
+
+    <div class="row">
+        @foreach (var even in Model)
         {
             <partial name="_EventSummary" model="even" />
         }
-    }
-</div>
-<div class="row">
-    <div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
-         page-class="btn btn-default" page-class-normal="btn-secondary"
-         page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
-         class="btn-group pull-left m-1">
-        ssdsdsd
     </div>
-</div>
+}
+else
+{
+    <p>No events @ViewBag.SearchString were found</p>
+}
 
