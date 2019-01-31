@@ -46,7 +46,7 @@ namespace nwEventoMVCa.Web.Controllers
                 {
                     CurrentPage = eventPage,
                     ItemsPerPage = 4,
-                    TotalItems = 10
+                    TotalItems = _eventService.GetAll("").Count()
                 },
                 CurrentCategory = null
             };
@@ -54,7 +54,8 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult GetAll(string searchString)
+        [HttpGet("{eventPage}/search")]
+        public IActionResult GetAll(int eventPage, string searchString)
         {
             var events = _eventService.GetAll(searchString).Select(e => new EventViewModel(e));
             ViewBag.SearchString = searchString;
@@ -143,7 +144,7 @@ namespace nwEventoMVCa.Web.Controllers
         }
 
         [HttpPost("{id}/purchase")]
-        public IActionResult Purchase(Guid id, int currentEventId)
+        public IActionResult Purchase(Guid id, int currentEventPage)
         {
             try
             {
@@ -152,7 +153,7 @@ namespace nwEventoMVCa.Web.Controllers
                 _ticketService.Purchase(email, id, 1);
                 var eventDetailsViewModel = _eventService.Get(id);
                 TempData["message"] = $"{eventDetailsViewModel.Name} was added";
-                return RedirectToAction(nameof(Index), new { eventPage = currentEventId });
+                return RedirectToAction(nameof(Index), new { eventPage = currentEventPage });
             }
             catch (Exception)
             {
