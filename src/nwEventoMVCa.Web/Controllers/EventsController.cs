@@ -46,7 +46,7 @@ namespace nwEventoMVCa.Web.Controllers
                 {
                     CurrentPage = eventPage,
                     ItemsPerPage = 4,
-                    TotalItems = 10
+                    TotalItems = _eventService.GetAll("").Count()
                 },
                 CurrentCategory = null
             };
